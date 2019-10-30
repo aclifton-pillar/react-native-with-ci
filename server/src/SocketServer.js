@@ -32,6 +32,7 @@ class SocketServer {
   }
 
   registerClient(ws, name) {
+    console.log('New client joined');
     ws.on('close', this.disconnect(ws));
     this._timeClients.push(ws);
   }
