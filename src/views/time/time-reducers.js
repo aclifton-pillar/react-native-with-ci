@@ -1,9 +1,3 @@
-import moment from "moment";
-
-const something = () => {
-    return moment().toString();
-};
-
 const updateTime = (state, action) => {
     return action.payload.time;
 };
@@ -14,8 +8,7 @@ const unknown = (state, action) => {
 
 const timeReducer = (state = null, action) => {
     const reducers = {
-        "WS_MESSAGE": updateTime,
-        "SOMETHING": something
+        "WS_MESSAGE": updateTime
     };
 
     const reducer = reducers[action.type];

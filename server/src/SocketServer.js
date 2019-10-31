@@ -19,6 +19,7 @@ class SocketServer {
         this._wss.emit('connection', ws, request);
       });
     });
+      setInterval(this.sendTime.bind(this), 1000);
   }
 
   disconnect(sender) {
@@ -35,6 +36,7 @@ class SocketServer {
   registerClient(ws, name) {
     console.log('connected client');
     ws.on('close', this.disconnect(ws));
+    ws.on('message', _ => console.dir(_));
     this._timeClients.push(ws);
   }
 }
