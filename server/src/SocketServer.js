@@ -28,10 +28,12 @@ class SocketServer {
   }
 
   sendTime() {
-    this._timeClients.forEach(client => client.send(moment().toString()));
+    this._timeClients.forEach(client => client.send(
+	JSON.stringify({time: moment().toString()})));
   }
 
   registerClient(ws, name) {
+    console.log('connected client');
     ws.on('close', this.disconnect(ws));
     this._timeClients.push(ws);
   }

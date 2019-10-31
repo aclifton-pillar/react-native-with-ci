@@ -20,7 +20,7 @@ app.get('/time', (req, res) => {
 
   socketServer.sendTime();
 
-  res.send(`${JSON.stringify(currentTime)}`);
+  res.send(`${JSON.stringify({"time": currentTime})}`);
 });
 
 let server = app.listen(port, () => console.log(`Listening at port ${port}`));

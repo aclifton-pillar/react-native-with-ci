@@ -10,7 +10,7 @@ import {
     wsDisconnected
 } from "./actions";
 
-const websocketMiddle = () => {
+const webSocketMiddle = () => {
     let socket = null;
 
     const onOpen = store => event => {
@@ -36,7 +36,7 @@ const websocketMiddle = () => {
     return store => next => action => {
         const connect = (action) => {
             closeExisting();
-            socket = new WebSocket(action.host);
+            socket = new WebSocket('ws://10.0.2.2:3000');
             socket.onmessage = onMessage(store);
             socket.onclose = onClose(store);
             socket.onopen = onOpen(store)
@@ -65,3 +65,5 @@ const websocketMiddle = () => {
         return handler(action);
     }
 };
+
+export default webSocketMiddle();
