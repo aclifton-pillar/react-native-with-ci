@@ -30,11 +30,4 @@ describe("App", () => {
             expect(getTimeAC.calledWithExactly()).toEqual(true);
         });
     });
-
-    describe("get space button", () => {
-        test("should have 99 buttons", () => {
-            const buttons = app.find(Button);
-            expect(buttons.length).toEqual(99);
-        });
-    });
 });
