@@ -15,6 +15,7 @@ jobs:
         run: |
           npm install;
           npm install -g detox-cli
+          ~/Library/Android/sdk/emulator/emulator @Nexus_5X
           detox build --configuration android.emu.debug
           detox test --configuration android.emu.debug
           brew tap wix/brew
