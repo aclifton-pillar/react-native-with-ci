@@ -1,4 +1,4 @@
-name: Detox CI
+name: Experiment
 
 on: [push]
 
