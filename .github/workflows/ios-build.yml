@@ -1,0 +1,21 @@
+name: Detox CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10"
+      - name: npm install, build, and test
+        run: >
+          npm ci;
+          npm test;
+          npm run ios --simulator "iPhone 11 Pro Max"
+          detox test --configuration ios.sim.debug
+
+
