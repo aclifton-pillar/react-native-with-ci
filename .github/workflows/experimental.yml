@@ -1,0 +1,23 @@
+name: Detox CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10"
+      - name: npm install, build, and test
+        run: |
+          where avdmanager
+          avdmanager list
+          avdmanager list avd
+          avdmanager list target
+          avdmanager list device
+          adb devices
+
+
