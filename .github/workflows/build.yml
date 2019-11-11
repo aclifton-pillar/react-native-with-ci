@@ -12,12 +12,13 @@ jobs:
         with:
           node-version: "10"
       - name: npm install, build, and test
-        env:
-          JAVA_HOME: "/Library/Java/JavaVirtualMachines/zulu-13.jdk/Contents/Home"
         run: |
           npm install;
           npm install -g detox-cli
           detox build --configuration android.emu.debug
           detox test --configuration android.emu.debug
-
+          brew tap wix/brew
+          brew install applesimutils
+          detox build --configuration ios.sim.debug
+          detox test --configuration ios.sim.debug
 
