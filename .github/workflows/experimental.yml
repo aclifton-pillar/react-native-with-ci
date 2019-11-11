@@ -13,6 +13,6 @@ jobs:
           node-version: "10"
       - name: whatever
         run: |
-          whoami
+          ls ~/Library/Android/sdk/tools/bin/
 
 
