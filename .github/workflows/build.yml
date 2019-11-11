@@ -21,7 +21,7 @@ jobs:
           npm install;
           npm install -g detox-cli
           $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-28;google_apis_playstore;x86"
-          $ANDROID_HOME/tools/bin/sdkmanager --licenses
+          yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
           $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device Nexus_5X
           $ANDROID_HOME/emulator/emulator @something
           detox build --configuration android.emu.debug
