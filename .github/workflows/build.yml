@@ -16,6 +16,7 @@ jobs:
           JAVA_HOME: "/Library/Java/JavaVirtualMachines/zulu-13.jdk/Contents/Home"
         run: |
           npm install;
+          npm install -g detox-cli
           detox test --configuration ios.sim.debug
           detox test --configuration android.emu.debug
 
