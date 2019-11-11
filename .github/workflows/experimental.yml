@@ -13,11 +13,11 @@ jobs:
           node-version: "10"
       - name: whatever
         run: |
-          which avdmanager
-          avdmanager list
-          avdmanager list avd
-          avdmanager list target
-          avdmanager list device
+          which avdmanager;
+          avdmanager list;
+          avdmanager list avd;
+          avdmanager list target;
+          avdmanager list device;
           adb devices
 
 
