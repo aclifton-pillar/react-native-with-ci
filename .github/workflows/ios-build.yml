@@ -13,7 +13,7 @@ jobs:
           node-version: "10"
       - name: npm install, build, and test
         run: >
-          npm ci;
+          npm install;
           npm test;
           npm run ios --simulator "iPhone 11 Pro Max"
           detox test --configuration ios.sim.debug
