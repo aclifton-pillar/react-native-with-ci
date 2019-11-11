@@ -17,7 +17,9 @@ jobs:
         run: |
           npm install;
           npm install -g detox-cli
+          detox build --configuration ios.sim.debug
           detox test --configuration ios.sim.debug
+          detox build --configuration android.emu.debug
           detox test --configuration android.emu.debug
 
 
