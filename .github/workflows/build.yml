@@ -12,8 +12,14 @@ jobs:
         with:
           node-version: "10"
       - name: npm install, build, and test
+        env:
+          JAVA_HOME: "/Library/Java/JavaVirtualMachines/zulu-13.jdk/Contents/Home"
         run: |
-          /usr/libexec/java_home
-          java -version
+          npm install;
+          npm test;
+          ./gradlew start
+          detox test --configuration ios.sim.debug
+          detox test --configuration android.emu.debug
+          ./gradlew stop
 
 
