@@ -13,11 +13,7 @@ jobs:
           node-version: "10"
       - name: npm install, build, and test
         run: |
-          npm install;
-          npm test;
-          ./gradlew start
-          detox test --configuration ios.sim.debug
-          detox test --configuration android.emu.debug
-          ./gradlew stop
+          /usr/libexec/java_home
+          java -version
 
 
