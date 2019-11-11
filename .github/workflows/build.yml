@@ -12,10 +12,9 @@ jobs:
         with:
           node-version: "10"
       - name: npm install, build, and test
-        run: >
+        run: |
           npm install;
           npm test;
-#          npm run ios --simulator "iPhone 11 Pro Max"
           ./gradlew start
           detox test --configuration ios.sim.debug
           detox test --configuration android.emu.debug
