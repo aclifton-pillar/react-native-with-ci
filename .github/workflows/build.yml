@@ -21,9 +21,12 @@ jobs:
           npm install;
           npm install -g detox-cli
           $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-28;google_apis_playstore;x86"
-          yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
-          $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device Nexus_5X
-          $ANDROID_HOME/emulator/emulator @something
+          $ANDROID_HOME/tools/bin/sdkmanager --update
+          $ANDROID_HOME/tools/bin/sdkmanager --licenses < ./yes.txt
+          echo "Finished with the licenses"
+          $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
+          npm run start &
+          sleep 30
           detox build --configuration android.emu.debug
           detox test --configuration android.emu.debug
           brew tap wix/brew
