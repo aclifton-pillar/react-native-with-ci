@@ -20,9 +20,9 @@ jobs:
         run: |
           npm install;
           npm install -g detox-cli
-          $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-28;google_apis_playstore;x86"
-          $ANDROID_HOME/tools/bin/sdkmanager --update
-          $ANDROID_HOME/tools/bin/sdkmanager --licenses < ./yes.txt
+          $ANDROID_HOME/tools/bin/sdkmanager --update --sdk_root=$ANDROID_HOME
+          $ANDROID_HOME/tools/bin/sdkmanager --licenses --sdk_root=$ANDROID_HOME < ./yes.txt
+          $ANDROID_HOME/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-28;google_apis_playstore;x86"
           echo "Finished with the licenses"
           $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
           npm run start &
