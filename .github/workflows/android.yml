@@ -34,6 +34,7 @@ jobs:
         run: |
           ls ~/.android/avd
           $ANDROID_HOME/tools/bin/avdmanager list avd
+          export PATH=$PATH:/Users/runner/Library/Android/sdk/platform-tools/
           adb devices
       - name: Sleep for 10 seconds
         run: |
