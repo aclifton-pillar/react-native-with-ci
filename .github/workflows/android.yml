@@ -7,27 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "10"
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: npm install
+      - name: look for the android
         run: |
-          npm install;
-          npm install -g detox-cli
-      - name: start metro bundler
-        run: |
-          npm run start &
-          sleep 30
-      - name: setup android emulator
-        run: |
-          echo "/usr/lib"
-          ls /usr/lib
-          echo "/usr/lib/android-sdk"
-          ls /usr/lib/android-sdk
+          echo "find the darned android"
+          find / -iname "android" -print
           echo "environment"
           printenv
       - name: Sleep for 10 seconds
