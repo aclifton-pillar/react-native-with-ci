@@ -24,9 +24,6 @@ jobs:
           sleep 30
       - name: setup android emulator
         run: |
-          echo "where"
-          where sdkmanager
-          where avdmanager
           echo "which"
           which sdkmanager
           which avdmanager
