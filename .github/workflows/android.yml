@@ -24,10 +24,6 @@ jobs:
           sleep 30
       - name: setup android emulator
         run: |
-          echo "home"
-          ls ~
-          echo "~/Android/Sdk"
-          ls ~/Android/Sdk
           echo "/usr/lib"
           ls /usr/lib
           echo "/usr/lib/android-sdk"
