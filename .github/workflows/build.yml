@@ -18,18 +18,6 @@ jobs:
         env:
           ANDROID_HOME: /Users/runner/Library/Android/sdk
         run: |
-          npm install;
-          npm install -g detox-cli
-          $ANDROID_HOME/tools/bin/sdkmanager --licenses --sdk_root=$ANDROID_HOME < ./yes.txt
-          $ANDROID_HOME/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-28;google_apis_playstore;x86"
-          echo "Finished with the licenses"
-          $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
-          npm run start &
-          sleep 30
-          detox build --configuration android.emu.debug
-          detox test --configuration android.emu.debug
-          brew tap wix/brew
-          brew install applesimutils
-          detox build --configuration ios.sim.debug
-          detox test --configuration ios.sim.debug
+          sleep 120
+        timeout-minutes: 1
 
