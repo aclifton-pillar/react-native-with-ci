@@ -22,19 +22,8 @@ jobs:
         run: |
           npm run start &
           sleep 30
-      - name: setup android emulator
-        env:
-          ANDROID_HOME: /Users/runner/Library/Android/sdk
-        run: |
-          $ANDROID_HOME/tools/bin/sdkmanager --licenses --sdk_root=$ANDROID_HOME < ./yes.txt
-          $ANDROID_HOME/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-28;google_apis_playstore;x86"
-          echo "Finished with the licenses"
-          $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
-      - name: run android build and test
-        run: |
-          detox build --configuration android.emu.debug
-          detox test --configuration android.emu.debug
       - name: run ios build and test
+        timeout-minutes: 5
         run: |
           brew tap wix/brew
           brew install applesimutils
