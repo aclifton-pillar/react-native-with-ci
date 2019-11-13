@@ -34,6 +34,7 @@ jobs:
         run: |
           ls ~/.android/avd
           $ANDROID_HOME/tools/bin/avdmanager list avd
+          adb devices
       - name: Sleep for 10 seconds
         run: |
           sleep 10
