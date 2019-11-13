@@ -1,4 +1,4 @@
-name: Detox CI
+name: Android Detox CI
 
 on: [push]
 
@@ -33,6 +33,7 @@ jobs:
       - name: run android build and test
         run: |
           ls ~/.android/avd
+          $ANDROID_HOME/tools/bin/avdmanager list avd
       - name: Sleep for 10 seconds
         run: |
           sleep 10

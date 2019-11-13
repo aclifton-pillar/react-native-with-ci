@@ -1,4 +1,4 @@
-name: Detox CI
+name: iOS Detox CI
 
 on: [push]
 
