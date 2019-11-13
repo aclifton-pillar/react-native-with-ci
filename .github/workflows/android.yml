@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build-and-test:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v1
@@ -23,32 +23,23 @@ jobs:
           npm run start &
           sleep 30
       - name: setup android emulator
-        env:
-          ANDROID_HOME: /Users/runner/Library/Android/sdk
         run: |
-          $ANDROID_HOME/tools/bin/sdkmanager --licenses --sdk_root=$ANDROID_HOME < ./yes.txt
-          $ANDROID_HOME/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-28;google_apis_playstore;x86"
-          echo "Finished with the licenses"
-          $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
-      - name: run android build and test
-        run: |
-          echo "=== BEFORE BUILD"
-          ls ~/.android/avd
-          $ANDROID_HOME/tools/bin/avdmanager list avd
-          adb devices
-          echo "==="
-          detox build --configuration android.emu.debug
-          echo "=== BETWEEN BUILD & TEST"
-          ls ~/.android/avd
-          $ANDROID_HOME/tools/bin/avdmanager list avd
-          adb devices
-          echo "==="
-          detox test --configuration android.emu.debug
-          echo "=== AFTER TEST"
-          ls ~/.android/avd
-          $ANDROID_HOME/tools/bin/avdmanager list avd
-          adb devices
-          echo "==="
+          echo "where"
+          where sdkmanager
+          where avdmanager
+          echo "which"
+          which sdkmanager
+          which avdmanager
+          echo "home"
+          ls ~
+          echo "~/Android/Sdk"
+          ls ~/Android/Sdk
+          echo "/usr/lib"
+          ls /usr/lib
+          echo "/usr/lib/android-sdk"
+          ls /usr/lib/android-sdk
+          echo "environment"
+          printenv
       - name: Sleep for 10 seconds
         run: |
           sleep 10

@@ -1,6 +1,6 @@
 name: Experiment
 
-on: []
+on: [push]
 
 jobs:
   build:
