@@ -3,9 +3,9 @@ name: Detox CI
 on: [push]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: macOS-latest
-
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -14,13 +14,32 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Sleep for 75 seconds
+      - name: npm install
+        run: |
+          npm install;
+          npm install -g detox-cli
+      - name: start metro bundler
+        run: |
+          npm run start &
+          sleep 30
+      - name: setup android emulator
         env:
           ANDROID_HOME: /Users/runner/Library/Android/sdk
         run: |
-          sleep 75
+          $ANDROID_HOME/tools/bin/sdkmanager --licenses --sdk_root=$ANDROID_HOME < ./yes.txt
+          $ANDROID_HOME/tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-28;google_apis_playstore;x86"
+          echo "Finished with the licenses"
+          $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
+      - name: run android build and test
+        run: |
+          detox build --configuration android.emu.debug
+          detox test --configuration android.emu.debug
+      - name: run ios build and test
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+          detox build --configuration ios.sim.debug
+          detox test --configuration ios.sim.debug
       - name: Sleep for 10 seconds
         run: |
           sleep 10
-        timeout-minutes: 1
-    timeout-minutes: 15
