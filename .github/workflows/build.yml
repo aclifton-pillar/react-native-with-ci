@@ -14,10 +14,13 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: npm install, build, and test
+      - name: "sleep for 75"
         env:
           ANDROID_HOME: /Users/runner/Library/Android/sdk
         run: |
-          sleep 120
+          sleep 75
+      - name: "next step"
+        run: |
+          sleep 10
         timeout-minutes: 1
-
+    timeout-minutes: 15
