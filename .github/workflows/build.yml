@@ -7,14 +7,14 @@ jobs:
     runs-on: macOS-latest
 
     steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10"
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
       - name: Sleep for 75 seconds
-        - uses: actions/checkout@v1
-        - uses: actions/setup-node@v1
-          with:
-            node-version: "10"
-        - uses: actions/setup-java@v1
-          with:
-            java-version: 1.8
         env:
           ANDROID_HOME: /Users/runner/Library/Android/sdk
         run: |
