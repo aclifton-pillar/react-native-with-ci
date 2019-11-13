@@ -1,4 +1,4 @@
-name: Android Detox CI
+name: Detox CI
 
 on: [push]
 
@@ -32,10 +32,23 @@ jobs:
           $ANDROID_HOME/tools/bin/avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
       - name: run android build and test
         run: |
+          echo "=== BEFORE BUILD"
           ls ~/.android/avd
           $ANDROID_HOME/tools/bin/avdmanager list avd
-          export PATH=$PATH:/Users/runner/Library/Android/sdk/platform-tools/
           adb devices
+          echo "==="
+          detox build --configuration android.emu.debug
+          echo "=== BETWEEN BUILD & TEST"
+          ls ~/.android/avd
+          $ANDROID_HOME/tools/bin/avdmanager list avd
+          adb devices
+          echo "==="
+          detox test --configuration android.emu.debug
+          echo "=== AFTER TEST"
+          ls ~/.android/avd
+          $ANDROID_HOME/tools/bin/avdmanager list avd
+          adb devices
+          echo "==="
       - name: Sleep for 10 seconds
         run: |
           sleep 10
