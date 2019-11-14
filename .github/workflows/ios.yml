@@ -14,15 +14,6 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: npm install
-        run: ./gradlew npmInstall
-      - name: install applesimutils
-        run: ./gradlew installApplesimutils
-      - name: start metro bundler
-        run: ./gradlew launchMetroBundler
-      - name: run unit and integration tests
+      - name: iOS CI
         timeout-minutes: 5
-        run: ./gradlew unitTest
-      - name: run ios build and test
-        timeout-minutes: 5
-        run: ./gradlew iosTest
+        run: ./gradlew iosCI
