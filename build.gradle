@@ -3,170 +3,67 @@ plugins {
     id "com.wiredforcode.spawn" version '0.8.2'
 }
 
-description = 'A gradle build for running multiple mobile emulators'
+description = 'build'
 version = '0.0'
 
-def numberOfAndroids = 1
-def numberOfIPhones = 1
-def startingEmulatorPort = 5574
-def ports = (0..numberOfAndroids-1).collect { it * 2 + startingEmulatorPort }
-
-task createDevices(group: "mobile") {
-    ext.createDevices = { ->
-        ports.each { port ->
-            println("Creating device test_$port")
-            exec {
-                commandLine 'avdmanager', 'create', 'avd', '--name', "test_$port", '--package', 'system-images;android-28;google_apis_playstore;x86', '--device', 'Nexus 5X'
-                standardOutput = new ByteArrayOutputStream();
-            }
+task npmInstall(group: "mobile") {
+    ext.npmInstall = { ->
+        exec {
+            commandLine 'npm', 'install'
         }
     }
 
-    ext.createIOSDevices = { ->
-        for(int deviceIndex: 1..numberOfIPhones) {
-            exec {
-                commandLine "xcrun", "simctl", "create", "iphone-$deviceIndex", "com.apple.CoreSimulator.SimDeviceType.iPhone-11", "com.apple.CoreSimulator.SimRuntime.iOS-13-2"
-            }
-            println("Created iOS device iphone-$deviceIndex")
+    ext.npmInstallDetoxCli = { ->
+        exec {
+            commandLine 'npm', 'install', '-g', 'detox-cli'
         }
     }
 
     doFirst {
-        createDevices()
-        createIOSDevices()
+        npmInstall();
+        npmInstallDetoxCli()
     }
 }
 
-task spawnEmulators(group: "mobile", dependsOn: "createDevices") {
-    ext.startEmulators = { ->
-        ports.each { port ->
-            println("Starting emulator test_$port")
-            ProcessBuilder emulator = new ProcessBuilder()
-            emulator.command('emulator', '-port', "$port", "@test_$port")
-            emulator.start()
+task installApplesimutils(group: "mobile") {
+    ext.tapWix = { ->
+        exec {
+            commandLine 'brew', 'tap', 'wix/brew'
         }
     }
 
-    ext.waitForEmulatorsToStart = { ->
-        while (true) {
-            def stdout = new ByteArrayOutputStream()
-            exec {
-                commandLine 'adb', 'devices'
-                standardOutput = stdout;
-            }
-            def statuses = "$stdout".split("\n").drop(1).collect { it.split()[1] }
-            println('waiting for all emulators to boot...')
-            sleep(3000)
-            if (statuses && statuses.every { it == 'device' }) break;
-        }
-    }
-
-    ext.startIosSimulators = { ->
-        for(int deviceIndex: 1..numberOfIPhones) {
-            exec {
-                commandLine "xcrun", "simctl", "boot", "iphone-$deviceIndex"
-            }
+    ext.installApplesimutils = { ->
+        exec {
+            commandLine 'brew', 'install', 'applesimutils'
         }
     }
 
     doFirst {
-        startEmulators()
-        startIosSimulators()
-        waitForEmulatorsToStart()
+        tapWix();
+        installApplesimutils();
     }
 }
 
-task launchMetroBundler(type: SpawnProcessTask, group: "mobile", dependsOn: "spawnEmulators") {
+task launchMetroBundler(type: SpawnProcessTask, group: "mobile") {
     command "npm run start"
     ready "Loading dependency graph, done."
 }
 
-task stopMetroBundler(type: KillProcessTask)
-
-task launchApps(group: "mobile", dependsOn: "launchMetroBundler") {
-    ext.launchApps = { ->
-        ports.each { port ->
-            println("starting app on test_$port")
-            exec {
-                // maybe have to workingDir to app's directory here later
-                commandLine 'react-native', 'run-android', '--deviceId', "emulator-$port"
-            }
+task iosTest(group: "mobile") {
+    ext.detoxBuild = { ->
+        exec {
+            commandLine 'detox', 'build', '--configuration', 'ios.sim.debug'
         }
     }
 
-    ext.launchAppsOnIPhones = { ->
-        for(int deviceIndex: 1..numberOfIPhones) {
-            exec {
-                commandLine "react-native", "run-ios", "--simulator", "iphone-$deviceIndex"
-            }
-        }
-    }
-
-    doLast {
-        launchAppsOnIPhones()
-        launchApps()
-    }
-}
-
-task start(group: "mobile", dependsOn: "launchApps") { }
-
-task stopEmulators(group: "mobile", dependsOn: "stopMetroBundler") {
-    ext.stopEmulators = {
-        ports.each { port ->
-            try {
-                exec {
-                    commandLine 'adb', '-s', "emulator-$port", 'emu', 'kill'
-                }
-            } catch (Exception ex) {
-                println ex
-            }
-        }
-    }
-
-    ext.stopIosEmulators = { ->
-        for(int deviceIndex: 1..numberOfIPhones) {
-            exec {
-                commandLine "xcrun", "simctl", "shutdown", "iphone-$deviceIndex"
-            }
+    ext.detoxTest = { ->
+        exec {
+            commandLine 'detox', 'test',  '--configuration', 'ios.sim.debug'
         }
     }
 
     doFirst {
-        stopEmulators()
-        stopIosEmulators()
+        detoxBuild();
+        detoxTest();
     }
 }
-
-task deleteDevices(group: "mobile", dependsOn: "stopEmulators") {
-    ext.deleteDevices = { ->
-        ports.each { port ->
-            try {
-                exec {
-                    commandLine 'avdmanager', 'delete', 'avd', '--name', "test_$port"
-                }
-            } catch (Exception ex) {
-                println("Unable to delete android device: $ex")
-            }
-        }
-    }
-
-    ext.deleteIOSDevices = { ->
-        for(int deviceIndex: 1..numberOfIPhones) {
-            try {
-                exec {
-                    commandLine "xcrun", "simctl", "delete", "iphone-$deviceIndex"
-                }
-                println("Deleted iOS device iphone-$deviceIndex")
-            } catch (Exception ex) {
-                println("Unable to delete iphone device: $ex")
-            }
-        }
-    }
-
-    doFirst {
-        deleteDevices()
-        deleteIOSDevices()
-    }
-}
-
-task stop(group: "mobile", dependsOn: "deleteDevices") { }

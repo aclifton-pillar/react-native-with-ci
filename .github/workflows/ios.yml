@@ -15,20 +15,11 @@ jobs:
         with:
           java-version: 1.8
       - name: npm install
-        run: |
-          npm install;
-          npm install -g detox-cli
+        run: ./gradlew npmInstall
+      - name: install applesimutils
+        run: ./gradlew installApplesimutils
       - name: start metro bundler
-        run: |
-          npm run start &
-          sleep 30
+        run: ./gradlew launchMetroBundler
       - name: run ios build and test
         timeout-minutes: 5
-        run: |
-          brew tap wix/brew
-          brew install applesimutils
-          detox build --configuration ios.sim.debug
-          detox test --configuration ios.sim.debug
-      - name: Sleep for 10 seconds
-        run: |
-          sleep 10
+        run: ./gradlew iosTest
