@@ -20,7 +20,7 @@ task npmInstall(group: "mobile") {
     }
 
     doFirst {
-        npmInstall();
+        npmInstall()
         npmInstallDetoxCli()
     }
 }
@@ -39,38 +39,40 @@ task installApplesimutils(group: "mobile") {
     }
 
     ext.checkForApplesimutils = { ->
+        def stdout = new ByteArrayOutputStream()
         exec {
-            try {
-                commandLine 'brew', 'info', 'applesimutils'
-                println("Applesimutils already installed.  Skipping...")
-            } catch (Exception ex) {
-                installApplesimutils();
-            }
+            commandLine 'brew', 'info', 'applesimutils'
+            standardOutput = stdout
+        }
+        def lines = "$stdout".split("\n")
+        if (lines.any{ it.contains('Not installed') }) {
+            installApplesimutils()
+        } else {
+            println("applesimutils found already installed")
         }
     }
+
     doFirst {
-        tapWix();
-        checkForApplesimutils();
+        tapWix()
+        checkForApplesimutils()
     }
 }
 
 task launchMetroBundler(group: "mobile", dependsOn: ["npmInstall", "installApplesimutils"]) {
     doFirst {
         try {
-            def proc = "npm run start &".execute();
-            def reader = proc.in.newReader();
-            def lastLine = "";
+            def proc = "npm run start &".execute()
+            def reader = proc.in.newReader()
+            def lastLine = ""
             while (!lastLine.contains("done.")) {
-                println(lastLine);
-                lastLine = reader.readLine();
-
+                println(lastLine)
+                lastLine = reader.readLine()
                 if (lastLine == null) {
                     throw new AlreadyRunningException("Metro bundler found already running.")
                 }
             }
-            println(lastLine);
-            println("Started Metro Bundler");
-
+            println(lastLine)
+            println("Started Metro Bundler")
         } catch (AlreadyRunningException ex) {
             println(ex.getMessage())
         }
@@ -103,8 +105,8 @@ task iosTest(group: "mobile", dependsOn: ["launchMetroBundler"]) {
     }
 
     doFirst {
-        detoxBuild();
-        detoxTest();
+        detoxBuild()
+        detoxTest()
     }
 }
 
@@ -116,6 +118,6 @@ task iosCI(group: "ci_builds", dependsOn: ["iosTest", "unitTest"]) {
 
 class AlreadyRunningException extends Exception {
     public AlreadyRunningException(String message) {
-        super(message);
+        super(message)
     }
 }
