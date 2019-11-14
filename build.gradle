@@ -49,6 +49,18 @@ task launchMetroBundler(type: SpawnProcessTask, group: "mobile") {
     ready "Loading dependency graph, done."
 }
 
+task unitTest(group: "mobile") {
+    ext.unitTest = { ->
+        exec {
+            commandLine 'npm', 'run', 'test'
+        }
+    }
+
+    doFirst {
+        unitTest()
+    }
+}
+
 task iosTest(group: "mobile") {
     ext.detoxBuild = { ->
         exec {

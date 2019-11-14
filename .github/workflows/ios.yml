@@ -20,6 +20,9 @@ jobs:
         run: ./gradlew installApplesimutils
       - name: start metro bundler
         run: ./gradlew launchMetroBundler
+      - name: run unit and integration tests
+        timeout-minutes: 5
+        run: ./gradlew unitTest
       - name: run ios build and test
         timeout-minutes: 5
         run: ./gradlew iosTest
