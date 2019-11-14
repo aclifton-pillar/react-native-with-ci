@@ -57,7 +57,7 @@ task installApplesimutils(group: "mobile") {
 task launchMetroBundler(group: "mobile", dependsOn: ["npmInstall", "installApplesimutils"]) {
     doFirst {
         try {
-            def proc = "react-native start &".execute();
+            def proc = "npm run start &".execute();
             def reader = proc.in.newReader();
             def lastLine = "";
             while (!lastLine.contains("done.")) {
@@ -110,7 +110,7 @@ task iosTest(group: "mobile", dependsOn: ["launchMetroBundler"]) {
 
 task iosCI(group: "ci_builds", dependsOn: ["iosTest", "unitTest"]) {
     doFirst {
-        println("Here goes nothing")
+        println("Starting Full iOS Continuous Integration Build and Test")
     }
 }
 
