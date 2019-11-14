@@ -38,18 +38,46 @@ task installApplesimutils(group: "mobile") {
         }
     }
 
+    ext.checkForApplesimutils = { ->
+        exec {
+            try {
+                commandLine 'brew', 'info', 'applesimutils'
+                println("Applesimutils already installed.  Skipping...")
+            } catch (Exception ex) {
+                installApplesimutils();
+            }
+        }
+    }
     doFirst {
         tapWix();
-        installApplesimutils();
+        checkForApplesimutils();
     }
 }
 
-task launchMetroBundler(type: SpawnProcessTask, group: "mobile") {
-    command "npm run start"
-    ready "Loading dependency graph, done."
+task launchMetroBundler(group: "mobile", dependsOn: ["npmInstall", "installApplesimutils"]) {
+    doFirst {
+        try {
+            def proc = "react-native start &".execute();
+            def reader = proc.in.newReader();
+            def lastLine = "";
+            while (!lastLine.contains("done.")) {
+                println(lastLine);
+                lastLine = reader.readLine();
+
+                if (lastLine == null) {
+                    throw new AlreadyRunningException("Metro bundler found already running.")
+                }
+            }
+            println(lastLine);
+            println("Started Metro Bundler");
+
+        } catch (AlreadyRunningException ex) {
+            println(ex.getMessage())
+        }
+    }
 }
 
-task unitTest(group: "mobile") {
+task unitTest(group: "mobile", dependsOn: "npmInstall") {
     ext.unitTest = { ->
         exec {
             commandLine 'npm', 'run', 'test'
@@ -61,7 +89,7 @@ task unitTest(group: "mobile") {
     }
 }
 
-task iosTest(group: "mobile") {
+task iosTest(group: "mobile", dependsOn: ["launchMetroBundler"]) {
     ext.detoxBuild = { ->
         exec {
             commandLine 'detox', 'build', '--configuration', 'ios.sim.debug'
@@ -77,5 +105,17 @@ task iosTest(group: "mobile") {
     doFirst {
         detoxBuild();
         detoxTest();
+    }
+}
+
+task iosCI(group: "ci_builds", dependsOn: ["iosTest", "unitTest"]) {
+    doFirst {
+        println("Here goes nothing")
+    }
+}
+
+class AlreadyRunningException extends Exception {
+    public AlreadyRunningException(String message) {
+        super(message);
     }
 }
