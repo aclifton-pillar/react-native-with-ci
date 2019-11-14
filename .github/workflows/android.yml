@@ -33,7 +33,5 @@ jobs:
           avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
       - name: run android build and test
         run: |
-          npm run start &
-          sleep 30
           detox build --configuration android.emu.debug
           detox test --configuration android.emu.debug
