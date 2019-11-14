@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v1
@@ -24,11 +24,11 @@ jobs:
           sleep 30
       - name: setup android emulator
         env:
-          ANDROID_HOME: "/usr/local/lib/android"
+          ANDROID_HOME: "/Users/runner/Library/Android/sdk"
         run: |
           export PATH=$PATH:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools
-          sdkmanager --licenses --sdk_root=$ANDROID_HOME < ./yes.txt
-          sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-28;google_apis_playstore;x86"
+          sdkmanager --licenses < ./yes.txt
+          sdkmanager "system-images;android-28;google_apis_playstore;x86"
           echo "Finished with the licenses"
           avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
       - name: run android build and test
