@@ -15,5 +15,5 @@ jobs:
         with:
           java-version: 1.8
       - name: iOS CI
-        timeout-minutes: 5
+        timeout-minutes: 10
         run: ./gradlew iosCI
