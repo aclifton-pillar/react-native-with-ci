@@ -1,12 +1,11 @@
 plugins {
-    id "base"
-    id "com.wiredforcode.spawn" version '0.8.2'
+    id 'base'
 }
 
 description = 'build'
 version = '0.0'
 
-task npmInstall(group: "mobile") {
+task npmInstall(group: 'mobile') {
     ext.npmInstall = { ->
         exec {
             commandLine 'npm', 'install'
@@ -25,7 +24,20 @@ task npmInstall(group: "mobile") {
     }
 }
 
-task installApplesimutils(group: "mobile") {
+task unitTest(group: 'mobile') {
+    dependsOn 'npmInstall'
+    ext.unitTest = { ->
+        exec {
+            commandLine 'npm', 'run', 'test'
+        }
+    }
+
+    doFirst {
+        unitTest()
+    }
+}
+
+task installApplesimutils(group: 'mobile') {
     ext.tapWix = { ->
         exec {
             commandLine 'brew', 'tap', 'wix/brew'
@@ -44,11 +56,11 @@ task installApplesimutils(group: "mobile") {
             commandLine 'brew', 'info', 'applesimutils'
             standardOutput = stdout
         }
-        def lines = "$stdout".split("\n")
+        def lines = '$stdout'.split('\n')
         if (lines.any{ it.contains('Not installed') }) {
             installApplesimutils()
         } else {
-            println("applesimutils found already installed")
+            println('applesimutils found already installed')
         }
     }
 
@@ -58,40 +70,65 @@ task installApplesimutils(group: "mobile") {
     }
 }
 
-task launchMetroBundler(group: "mobile", dependsOn: ["npmInstall", "installApplesimutils"]) {
+task setupAvd(group: 'mobile') {
+    ext.acceptSdkLicenses = { ->
+        exec {
+            commandLine 'sdkmanager', '--licenses'
+            standardInput new FileInputStream('./yes.txt')
+        }
+    }
+
+   ext.installSdk = { ->
+        exec {
+            commandLine 'sdkmanager', 'system-images;android-28;google_apis_playstore;x86'
+        }
+    }
+
+   ext.createAvd = { ->
+        exec {
+            commandLine 'avdmanager', 'create', 'avd',
+                '--name', '__something__',
+                '--package', 'system-images;android-28;google_apis_playstore;x86',
+                '--device', 'Nexus 5X',
+                '--force'
+        }
+    }
+
+    doFirst {
+        acceptSdkLicenses()
+        installSdk()
+        createAvd()
+    }
+}
+
+task launchMetroBundler(group: 'mobile') {
+    dependsOn 'npmInstall'
     doFirst {
         try {
-            def proc = "npm run start &".execute()
+            def proc = 'npm run start &'.execute()
             def reader = proc.in.newReader()
-            def lastLine = ""
-            while (!lastLine.contains("done.")) {
+            def lastLine = ''
+            while (!lastLine.contains('done.')) {
                 println(lastLine)
                 lastLine = reader.readLine()
                 if (lastLine == null) {
-                    throw new AlreadyRunningException("Metro bundler found already running.")
+                    throw new AlreadyRunningException('Metro bundler found already running.')
                 }
             }
             println(lastLine)
-            println("Started Metro Bundler")
+            println('Started Metro Bundler')
         } catch (AlreadyRunningException ex) {
             println(ex.getMessage())
         }
     }
 }
 
-task unitTest(group: "mobile", dependsOn: "npmInstall") {
-    ext.unitTest = { ->
-        exec {
-            commandLine 'npm', 'run', 'test'
-        }
-    }
+launchMetroBundler.mustRunAfter('installApplesimutils')
+launchMetroBundler.mustRunAfter('setupAvd')
 
-    doFirst {
-        unitTest()
-    }
-}
+task iosTest(group: 'mobile') {
+    dependsOn 'launchMetroBundler', 'installApplesimutils'
 
-task iosTest(group: "mobile", dependsOn: ["launchMetroBundler"]) {
     ext.detoxBuild = { ->
         exec {
             commandLine 'detox', 'build', '--configuration', 'ios.sim.debug'
@@ -110,10 +147,33 @@ task iosTest(group: "mobile", dependsOn: ["launchMetroBundler"]) {
     }
 }
 
-task iosCI(group: "ci_builds", dependsOn: ["iosTest", "unitTest"]) {
-    doFirst {
-        println("Starting Full iOS Continuous Integration Build and Test")
+task androidTest(group: 'mobile') {
+    dependsOn 'launchMetroBundler', 'setupAvd'
+
+    ext.detoxBuild = { ->
+        exec {
+            commandLine 'detox', 'build', '--configuration', 'android.emu.debug'
+        }
     }
+
+    ext.detoxTest = { ->
+        exec {
+            commandLine 'detox', 'test',  '--configuration', 'android.emu.debug'
+        }
+    }
+
+    doFirst {
+        detoxBuild()
+        detoxTest()
+    }
+}
+
+task iosCI(group: 'ci_builds') {
+    dependsOn 'iosTest', 'unitTest'
+}
+
+task androidCI(group: 'ci_builds') {
+    dependsOn 'androidTest', 'unitTest'
 }
 
 class AlreadyRunningException extends Exception {

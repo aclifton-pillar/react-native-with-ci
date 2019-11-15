@@ -1,4 +1,4 @@
-name: Detox CI
+name: Android Detox CI
 
 on: [release]
 
@@ -14,24 +14,8 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: npm install
-        run: |
-          npm install;
-          npm install -g detox-cli
-      - name: start metro bundler
-        run: |
-          npm run start &
-          sleep 30
-      - name: setup android emulator
+      - name: Android CI
+        timeout-minutes: 10
         env:
           ANDROID_HOME: "/Users/runner/Library/Android/sdk"
-        run: |
-          export PATH=$PATH:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools
-          sdkmanager --licenses < ./yes.txt
-          sdkmanager "system-images;android-28;google_apis_playstore;x86"
-          echo "Finished with the licenses"
-          avdmanager create avd --name something --package "system-images;android-28;google_apis_playstore;x86" --device "Nexus 5X"
-      - name: run android build and test
-        run: |
-          detox build --configuration android.emu.debug
-          detox test --configuration android.emu.debug
+        run: ./gradlew androidCI
