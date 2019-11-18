@@ -19,5 +19,5 @@ jobs:
         with:
           cmd: ./gradlew androidTest
           api: 28
-          tag: google_apis_playstore
+          tag: google_apis
           abi: x86
