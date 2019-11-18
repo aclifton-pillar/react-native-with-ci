@@ -126,6 +126,15 @@ task launchMetroBundler(group: 'mobile') {
 launchMetroBundler.mustRunAfter('installApplesimutils')
 launchMetroBundler.mustRunAfter('setupAvd')
 
+task killMetroBundler(group: 'mobile') {
+    doFirst {
+        def pidProc = 'lsof -ntP -i4TCP:8081'.execute()
+        def pid = pidProc.in.newReader().readLine()
+        println(pid)
+        "kill ${pid}".execute()
+    }
+}
+
 task iosTest(group: 'mobile') {
     dependsOn 'launchMetroBundler', 'installApplesimutils'
 
