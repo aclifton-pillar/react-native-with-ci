@@ -17,7 +17,7 @@ jobs:
       - uses: malinskiy/action-android/install-sdk@release/0.0.3
       - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.3
         with:
-          cmd: ./gradlew androidTest
+          cmd: ./gradlew npmInstall
           api: 28
           tag: google_apis
           abi: x86
