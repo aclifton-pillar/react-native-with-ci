@@ -212,6 +212,8 @@ task androidCI(group: 'ci_builds') {
     dependsOn 'androidTest', 'unitTest'
 }
 
+//androidCI.finalizedBy(removeAvd)
+
 class AlreadyRunningException extends Exception {
     public AlreadyRunningException(String message) {
         super(message)
