@@ -127,11 +127,23 @@ launchMetroBundler.mustRunAfter('installApplesimutils')
 launchMetroBundler.mustRunAfter('setupAvd')
 
 task killMetroBundler(group: 'mobile') {
+    ext.getMetroBundlerPid = { ->
+        def lsofOut = new ByteArrayOutputStream()
+        exec {
+            commandLine 'lsof', '-ntP', '-i4TCP:8081'
+            standardOutput = lsofOut
+        }
+        return "$lsofOut".trim()
+    }
+
+    ext.killProc = { pid ->
+        exec {
+            commandLine 'kill', pid
+        }
+    }
+
     doFirst {
-        def pidProc = 'lsof -ntP -i4TCP:8081'.execute()
-        def pid = pidProc.in.newReader().readLine()
-        println(pid)
-        "kill ${pid}".execute()
+        killProc(getMetroBundlerPid())
     }
 }
 
