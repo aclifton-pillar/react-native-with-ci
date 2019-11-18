@@ -6,9 +6,9 @@ jobs:
   build:
     runs-on: macOS-latest
     steps:
-      - uses: .github/actions/hello-action
+      - name: 'Oh hi'
+        uses: '.github/actions/hello-action'
         with:
           whomst: 'Updog'
-        name: 'Oh hi'
 
 
