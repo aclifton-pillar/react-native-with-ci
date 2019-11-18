@@ -87,7 +87,7 @@ task setupAvd(group: 'mobile') {
    ext.createAvd = { ->
         exec {
             commandLine 'avdmanager', 'create', 'avd',
-                '--name', '__something__',
+                '--name', '__android-ci-avd__',
                 '--package', 'system-images;android-28;google_apis_playstore;x86',
                 '--device', 'Nexus 5X',
                 '--force'
@@ -98,6 +98,18 @@ task setupAvd(group: 'mobile') {
         acceptSdkLicenses()
         installSdk()
         createAvd()
+    }
+}
+
+task removeAvd(group: 'mobile') {
+    ext.removeAvd = { ->
+        exec {
+            commandLine 'avdmanager', 'delete', 'avd', '__android-ci-avd__'
+        }
+    }
+
+    doFirst {
+        removeAvd()
     }
 }
 
@@ -188,6 +200,9 @@ task androidTest(group: 'mobile') {
         detoxTest()
     }
 }
+
+iosTest.finalizedBy(killMetroBundler)
+androidTest.finalizedBy(killMetroBundler)
 
 task iosCI(group: 'ci_builds') {
     dependsOn 'iosTest', 'unitTest'
