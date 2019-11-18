@@ -1,0 +1,13 @@
+name: 'Hello World'
+description: 'Say Hello'
+inputs:
+  whomst:
+    description: 'to greet'
+    required: true
+    default: 'Spongebob'
+outputs:
+  time:
+    description: 'When'
+runs:
+    using: 'node12'
+    main: 'index.js'
