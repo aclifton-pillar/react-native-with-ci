@@ -5,17 +5,10 @@ on: [release]
 jobs:
   build:
     runs-on: macOS-latest
-
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: ./.github/actions/hello-action
         with:
-          node-version: "10"
-      - name: whatever
-        run: |
-          ~/Library/Android/sdk/tools/bin/avdmanager list;
-          ~/Library/Android/sdk/tools/bin/avdmanager list devices;
-          ~/Library/Android/sdk/tools/bin/avdmanager list targets;
-          ~/Library/Android/sdk/tools/bin/avdmanager list avd;
+          whomst: 'Updog'
+        name: 'Oh hi'
 
 
