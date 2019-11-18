@@ -17,12 +17,7 @@ jobs:
       - uses: malinskiy/action-android/install-sdk@release/0.0.3
       - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.3
         with:
-          cmd: ./gradlew integrationTest
-          api: 25
-          tag: default
+          cmd: ./gradlew androidTest
+          api: 28
+          tag: google_apis_playstore
           abi: x86
-      - run: adb devices
-      - run: echo $ANDROID_HOME
-      - name: Android CI
-        timeout-minutes: 10
-        run: ./gradlew androidCI
