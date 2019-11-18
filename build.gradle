@@ -56,7 +56,7 @@ task installApplesimutils(group: 'mobile') {
             commandLine 'brew', 'info', 'applesimutils'
             standardOutput = stdout
         }
-        def lines = '$stdout'.split('\n')
+        def lines = "$stdout".split('\n')
         if (lines.any{ it.contains('Not installed') }) {
             installApplesimutils()
         } else {
