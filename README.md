@@ -19,6 +19,25 @@ The repository contains a very basic React Native app with some testing setup, i
 e2e/UI test, a Gradle build for running tests, and workflows for running them in Github Actions.
 Plunder this repository and adapt to your project as needed.
 
+## Installation
+
+Start with `npm install`, obviously. Consider using the gradle build files to install other dev
+tools, or at least to see what else you might need. 
+
+## Try it out
+
+Treat it like any other react-native app.  Then, run Metro Bundler and the application: npm run
+ios or npm run android. Click buttons and stuff.
+
+## Run tests
+
+`npm test` or course but check out those Gradle tasks! Try `./gradlew iosTest` and 
+`./gradlew androidTest`. 
+
+## CI with Github Actions
+
+Working sample workflows are in `.github`.
+
 ## However
 
 Running an android emulator for detox tests on Github Actions is still being worked on, what you
@@ -26,12 +45,7 @@ see here probably doesn't work yet.
 
 ## Also
 
-There are a couple of branches:
-
-* `websocket-middleware-spike` demonstrates creating a Redux middleware for websockets.
-* `redux-websocket-spike` demonstrates using a Redux middleware for websockets that we didn't make
-
-And there are some other repositories forked from this one that may be of interest:
+There are some other repositories forked from this one that may be of interest:
 
 * [aclifton-pillar/react-native-websocket-middleware-third-party](https://github.com/aclifton-pillar/react-native-websocket-middleware-third-party)
 * [aclifton-pillar/react-native-websocket-middleware-scaffold](https://github.com/aclifton-pillar/react-native-websocket-middleware-scaffold)
