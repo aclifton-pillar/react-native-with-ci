@@ -26,7 +26,7 @@ see here probably doesn't work yet.
 
 ## Also
 
-There are also a couple of branches:
+There are a couple of branches:
 
 * `websocket-middleware-spike` demonstrates creating a Redux middleware for websockets.
 * `redux-websocket-spike` demonstrates using a Redux middleware for websockets that we didn't make
