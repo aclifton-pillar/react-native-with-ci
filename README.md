@@ -19,6 +19,13 @@ The repository contains a very basic React Native app with some testing setup, i
 e2e/UI test, a Gradle build for running tests, and workflows for running them in Github Actions.
 Plunder this repository and adapt to your project as needed.
 
+## However
+
+Running an android emulator for detox tests on Github Actions is still being worked on, what you
+see here probably doesn't work yet.
+
+## Also
+
 There are also a couple of branches:
 
 * `websocket-middleware-spike` demonstrates creating a Redux middleware for websockets.
@@ -26,3 +33,6 @@ There are also a couple of branches:
 
 And there are some other repositories forked from this one that may be of interest:
 
+* [aclifton-pillar/react-native-websocket-middleware-third-party](/aclifton-pillar/react-native-websocket-middleware-third-party)
+* [aclifton-pillar/react-native-websocket-middleware-scaffold](/aclifton-pillar/react-native-websocket-middleware-scaffold)
+* [hoff2-ACN/jest-vs-rtl](/hoff2-ACN/jest-vs-rtl)
