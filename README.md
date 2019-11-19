@@ -33,6 +33,6 @@ There are also a couple of branches:
 
 And there are some other repositories forked from this one that may be of interest:
 
-* [aclifton-pillar/react-native-websocket-middleware-third-party](/aclifton-pillar/react-native-websocket-middleware-third-party)
-* [aclifton-pillar/react-native-websocket-middleware-scaffold](/aclifton-pillar/react-native-websocket-middleware-scaffold)
-* [hoff2-ACN/jest-vs-rtl](/hoff2-ACN/jest-vs-rtl)
+* [aclifton-pillar/react-native-websocket-middleware-third-party](https://github.com/aclifton-pillar/react-native-websocket-middleware-third-party)
+* [aclifton-pillar/react-native-websocket-middleware-scaffold](https://github.com/aclifton-pillar/react-native-websocket-middleware-scaffold)
+* [hoff2-ACN/jest-vs-rtl](https://github.com/hoff2-ACN/jest-vs-rtl)
