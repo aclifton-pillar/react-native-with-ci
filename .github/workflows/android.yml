@@ -18,7 +18,7 @@ jobs:
         with:
           verbose: yes
           acceptLicense: yes
-      - uses: hoff2-ACN/action-android/emulator-run-cmd@0.0.4
+      - uses: hoff2-ACN/action-android/emulator-run-cmd@release/0.0.4
         with:
           cmd: ./gradlew npmInstall
           api: 28
