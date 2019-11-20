@@ -140,12 +140,15 @@ launchMetroBundler.mustRunAfter('setupAvd')
 
 task killMetroBundler(group: 'mobile') {
     ext.getMetroBundlerPid = { ->
-        def lsofOut = new ByteArrayOutputStream()
-        exec {
-            commandLine 'lsof', '-ntP', '-i4TCP:8081'
-            standardOutput = lsofOut
+        def proc = "lsof -n -i4TCP:8081".execute()
+        def reader = proc.in.newReader()
+        while (true) {
+            def line = reader.readLine()
+            if (line == null) break
+            if (line.contains('LISTEN')) {
+                return line.split()[1]
+            }
         }
-        return "$lsofOut".trim()
     }
 
     ext.killProc = { pid ->
@@ -155,7 +158,8 @@ task killMetroBundler(group: 'mobile') {
     }
 
     doFirst {
-        killProc(getMetroBundlerPid())
+        def pid = getMetroBundlerPid()
+        if (pid) killProc(pid)
     }
 }
 
