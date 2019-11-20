@@ -33,8 +33,7 @@ installation instructions.
 * `./gradlew androidTest` (run e2e tests Android only)
 
 ## CI with Github Actions
-
-GitHub Actions workflows (and possibly actions) are in `/.github`. They run
+Workflows are in `/.github`. They run
 the `iosCI` and `androidCI` Gradle tasks.
 
 At the present time, `android.yml` will fail due to difficulties running
