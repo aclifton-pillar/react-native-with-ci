@@ -32,6 +32,13 @@ installation instructions.
 * `./gradlew iosTest` (run e2e tests iOS only)
 * `./gradlew androidTest` (run e2e tests Android only)
 
+_TIP:_ If the `setupAvd` Gradle test fails with this:
+```
+Exception in thread "main" java.lang.NoClassDefFoundError: javax/xml/bind/annotation/XmlSchema
+        at com.android.repository.api.SchemaModule$SchemaModuleVersion.<init>(SchemaModule.java:156)
+```
+It's probably because your `JAVA_HOME` environment variable is unset or incorrect
+
 ## CI with Github Actions
 Workflows are in `/.github`. They run
 the `iosCI` and `androidCI` Gradle tasks.
