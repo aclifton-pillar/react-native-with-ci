@@ -14,11 +14,11 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - uses: hoff2-ACN/action-android/install-sdk@release/0.0.3
+      - uses: hoff2-ACN/action-android/install-sdk@0.0.4
         with:
           verbose: yes
           acceptLicense: yes
-      - uses: hoff2-ACN/action-android/emulator-run-cmd@release/0.0.4
+      - uses: hoff2-ACN/action-android/emulator-run-cmd@0.0.4
         with:
           cmd: ./gradlew npmInstall
           api: 28
