@@ -11,7 +11,7 @@ const App = props => (
             testID="getTime"
         />
         {props.currentTime &&
-        <Text testID="time">{'Current Time: ' + props.currentTime}</Text>
+            <Text testID="time">{'Current Time: ' + props.currentTime}</Text>
         }
     </View>
 );
