@@ -186,6 +186,7 @@ task iosTest(group: 'mobile') {
 
 task androidTest(group: 'mobile') {
 //     dependsOn 'launchMetroBundler'//, 'setupAvd'
+    dependsOn 'npmInstall'
 
     ext.detoxBuild = { ->
         exec {
