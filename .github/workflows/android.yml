@@ -14,8 +14,10 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Android CI
-        timeout-minutes: 10
-        env:
-          ANDROID_HOME: "/Users/runner/Library/Android/sdk"
-        run: ./gradlew androidCI
+      - uses: malinskiy/action-android/install-sdk@release/0.0.3
+      - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.3
+        with:
+          cmd: ./gradlew unitTest
+          api: 28
+          tag: default
+          abi: x86
