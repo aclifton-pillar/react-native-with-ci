@@ -185,7 +185,7 @@ task iosTest(group: 'mobile') {
 }
 
 task androidTest(group: 'mobile') {
-    dependsOn 'launchMetroBundler'//, 'setupAvd'
+//     dependsOn 'launchMetroBundler'//, 'setupAvd'
 
     ext.detoxBuild = { ->
         exec {
@@ -216,7 +216,7 @@ task androidCI(group: 'ci_builds') {
     dependsOn 'androidTest', 'unitTest'
 }
 
-//androidCI.finalizedBy(removeAvd)
+androidCI.finalizedBy(removeAvd)
 
 class AlreadyRunningException extends Exception {
     public AlreadyRunningException(String message) {
