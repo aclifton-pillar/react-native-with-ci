@@ -15,8 +15,6 @@ jobs:
         with:
           java-version: 1.8
       - uses: hoff2-ACN/action-android/install-sdk@release/0.0.5
-        with:
-          acceptLicense: yes
       - uses: hoff2-ACN/action-android/emulator-run-cmd@release/0.0.5
         with:
           cmd: ./gradlew androidCI
