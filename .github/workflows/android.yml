@@ -1,6 +1,6 @@
 name: Android Detox CI
 
-on: [release]
+on: [push]
 
 jobs:
   build-and-test:
