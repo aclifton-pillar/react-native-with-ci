@@ -15,11 +15,14 @@ jobs:
         with:
           java-version: 1.8
       - uses: hoff2-ACN/action-android/install-sdk@release/0.0.5
+        with:
+          verbose: yes
       - uses: hoff2-ACN/action-android/emulator-run-cmd@release/0.0.5
         with:
           cmd: ./gradlew androidCI
           api: 28
           tag: google_apis
           abi: x86
+          verbose: yes
 
 
